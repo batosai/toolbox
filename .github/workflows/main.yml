@@ -55,6 +55,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ${{ secrets.APP_PATH }}/source/build
+            mkdir tmp
             ln -s ${{ secrets.APP_PATH }}/shared/.env ${{ secrets.APP_PATH }}/source/build/
             npm ci --silent --no-progress --production
             node ace migration:run --force
