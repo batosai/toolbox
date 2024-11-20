@@ -8,7 +8,9 @@ const shieldConfig = defineConfig({
    */
   csp: {
     enabled: app.inProduction,
-    directives: {},
+    directives: {
+      defaultSrc: [`'self'`],
+    },
     reportOnly: false,
   },
 
