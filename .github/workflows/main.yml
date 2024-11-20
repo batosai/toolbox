@@ -36,6 +36,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Copy package-lock
+        run: cp package-lock.json build
+
       - name: Copy repository content
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -55,7 +58,6 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ${{ secrets.APP_PATH }}/source/build
-            cp ../package-lock.json .
             npm ci --silent --no-progress --production
             node ace migration:run --force
 
