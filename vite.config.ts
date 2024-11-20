@@ -2,6 +2,7 @@ import inertia from '@adonisjs/inertia/client'
 import adonisjs from '@adonisjs/vite/client'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
+import { getDirname } from '@adonisjs/core/helpers'
 
 export default defineConfig({
   plugins: [
@@ -16,4 +17,14 @@ export default defineConfig({
       ],
     }),
   ],
+
+  /**
+   * Define aliases for importing modules from
+   * your frontend code
+   */
+  resolve: {
+    alias: {
+      '~/': `${getDirname(import.meta.url)}/src/diff/inertia/`,
+    },
+  },
 })
