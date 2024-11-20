@@ -9,7 +9,7 @@ const shieldConfig = defineConfig({
   csp: {
     enabled: app.inProduction,
     directives: {
-      defaultSrc: [`'self'`],
+      defaultSrc: [`'self'`, 'https://umami.jrmc.dev', 'https://api.github.com'],
     },
     reportOnly: false,
   },
