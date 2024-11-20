@@ -59,7 +59,6 @@ jobs:
           script: |
             cd ${{ secrets.APP_PATH }}/source/build
             npm ci --silent --no-progress --production
-            node ace migration:run --force
 
       - name: Notification
         if: ${{ always() && job.status == 'failure' }}
