@@ -10,6 +10,8 @@ const shieldConfig = defineConfig({
     enabled: app.inProduction,
     directives: {
       defaultSrc: [`'self'`, 'https://umami.jrmc.dev', 'https://api.github.com'],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'", "'unsafe-eval'", "'unsafe-inline'", 'https://umami.jrmc.dev', 'https://api.github.com'],
     },
     reportOnly: false,
   },
