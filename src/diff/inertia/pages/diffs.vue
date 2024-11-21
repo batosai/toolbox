@@ -45,10 +45,10 @@
   <section class="mx-8">
     <Filter :tags="tags" :sourceVersion="sourceVersion!" :targetVersion="targetVersion!" />
 
-    <tempate v-if="!files.length">
+    <template v-if="!files.length">
       <div x-show="files.length > 0" class="w-full h-8 mb-4 skeleton"></div>
       <div x-show="files.length > 0" class="w-full skeleton h-72"></div>
-    </tempate>
+    </template>
     <template v-else>
       <template v-for="file in files">
         <Title :file="file" :sourceVersion="sourceVersion!" :targetVersion="targetVersion!" />
