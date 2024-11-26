@@ -27,8 +27,8 @@
       </svg>
     </div>
 
-    <div class="w-1/4 mx-auto">
-      <div class="flex my-4">
+    <div class="w-full mx-auto md:w-1/4">
+      <div class="flex my-4 text-xs md:text-base">
         <span class="text-[#777]">https://github.com/</span>
         <span class="relative font-bold highlighted-part" :class="{ animate: isAnimating }">
           batosai/adonis-attachment
@@ -39,7 +39,7 @@
       </p>
     </div>
 
-    <div class="w-1/4 mx-auto mt-10 join">
+    <div class="w-full mx-auto mt-10 md:w-1/4 join">
       <input
         v-model="repo"
         @keydown.enter="handleEnter"
