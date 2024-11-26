@@ -1,14 +1,3 @@
-<script setup lang="ts">
-  import { Head, router } from '@inertiajs/vue3'
-  import { ref } from 'vue'
-
-  const repo = ref('')
-
-  const redirectToPage = () => {
-    router.visit(`/${repo.value}`)
-  }
-</script>
-
 <template>
   <Head title="Homepage" />
 
@@ -34,16 +23,85 @@
       </h2>
     </div>
 
-    <div class="w-1/4 mt-10 sm:mx-auto join">
+    <div class="w-1/4 mx-auto">
+      <div class="flex my-4">
+        <span class="text-[#777]">https://github.com/</span>
+        <span class="relative font-bold highlighted-part" :class="{ animate: isAnimating }">
+          batosai/adonis-attachment
+        </span>
+      </div>
+      <p>
+        Retrieve the highlighted part and enter it into the field below:
+      </p>
+    </div>
+
+    <div class="w-1/4 mx-auto mt-10 join">
       <input
         v-model="repo"
+        @keydown.enter="handleEnter"
         class="w-full input input-bordered join-item placeholder:text-neutral-content placeholder:italic"
+        :class="{ 'input-error': !isValidFormat && repo }"
         placeholder="batosai/adonis-attachment"
         value=""
       />
-      <button class="btn btn-primary join-item" @click="redirectToPage" :disabled="repo === ''">
+      <button class="btn btn-primary join-item" @click="redirectToPage" :disabled="repo === '' || !isValidFormat">
         ok
       </button>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+  import { Head, router } from '@inertiajs/vue3'
+  import { ref, computed, onMounted } from 'vue'
+
+  const repo = ref('')
+
+  const isValidFormat = computed(() => /^[a-zA-Z0-9_-]{2,}\/[a-zA-Z0-9_-]{2,}$/.test(repo.value))
+
+  const redirectToPage = () => {
+    router.visit(`/${repo.value}`)
+  }
+
+  const handleEnter = () => {
+    if (isValidFormat.value) {
+      redirectToPage()
+    }
+  }
+
+  const isAnimating = ref(false)
+
+  const triggerAnimation = () => {
+  setTimeout(() => {
+    isAnimating.value = true
+    setTimeout(() => {
+      isAnimating.value = false
+    }, 2000)
+  }, 1000)
+}
+
+  onMounted(() => {
+    triggerAnimation()
+  })
+</script>
+
+<style scoped>
+
+.highlighted-part {
+  color: #2c974b;
+}
+
+.highlighted-part::after {
+  @apply absolute left-0 right-0 bottom-0 h-[2px];
+  content: '';
+  background: #2c974b;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s ease-in-out;
+}
+
+.highlighted-part.animate::after {
+  transform: scaleX(1);
+}
+
+</style>
