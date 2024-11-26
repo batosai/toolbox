@@ -45,7 +45,9 @@ export default class GithubService {
       if (response.data) {
         const data = response.data as { files: Array<object> }
 
-        files = files.concat(data.files.map((file) => new Patch(file as PatchType)))
+        if (data.files) {
+          files = files.concat(data.files.map((file) => new Patch(file as PatchType)))
+        }
       }
     }
 
