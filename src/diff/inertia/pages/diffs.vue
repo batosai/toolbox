@@ -1,3 +1,24 @@
+<template>
+  <Head title="Diff" />
+
+  <Header :owner="owner" :repo="repo" />
+
+  <section class="mx-8">
+    <Filter :tags="tags" :sourceVersion="sourceVersion!" :targetVersion="targetVersion!" />
+
+    <template v-if="!files.length">
+      <div x-show="files.length > 0" class="w-full h-8 mb-4 skeleton"></div>
+      <div x-show="files.length > 0" class="w-full skeleton h-72"></div>
+    </template>
+    <template v-else>
+      <template v-for="file in files">
+        <Title :file="file" :sourceVersion="sourceVersion!" :targetVersion="targetVersion!" />
+        <Code :file="file" />
+      </template>
+    </template>
+  </section>
+</template>
+
 <script setup lang="ts">
   import { Head } from '@inertiajs/vue3'
   import { onMounted, ref } from 'vue'
@@ -36,24 +57,3 @@
     }
   })
 </script>
-
-<template>
-  <Head title="Diff" />
-
-  <Header :owner="owner" :repo="repo" />
-
-  <section class="mx-8">
-    <Filter :tags="tags" :sourceVersion="sourceVersion!" :targetVersion="targetVersion!" />
-
-    <template v-if="!files.length">
-      <div x-show="files.length > 0" class="w-full h-8 mb-4 skeleton"></div>
-      <div x-show="files.length > 0" class="w-full skeleton h-72"></div>
-    </template>
-    <template v-else>
-      <template v-for="file in files">
-        <Title :file="file" :sourceVersion="sourceVersion!" :targetVersion="targetVersion!" />
-        <Code :file="file" />
-      </template>
-    </template>
-  </section>
-</template>
