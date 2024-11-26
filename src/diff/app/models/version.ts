@@ -1,5 +1,5 @@
 const ANCHORED_VERSION_PATTERN =
-  /^\s*([0-9]+(\.[0-9a-zA-Z]+)*(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?)?\s*$/
+  /^\s*v?([0-9]+(\.[0-9a-zA-Z_]+)*(-[0-9A-Za-z_-]+(\.[0-9A-Za-z_-]+)*)?)?\s*$/
 const EMPTY_PATTERN = /^\s*$/
 
 function dropWhile<T>(arr: T[], func: (item: T) => boolean) {
@@ -36,9 +36,9 @@ export default class Version {
   constructor(version: string) {
     version = version.replace(/\n/g, ' ')
 
-    // if (!ANCHORED_VERSION_PATTERN.test(version)) {
-    //   throw new Error(`Malformed version number string "${version}"`)
-    // }
+    if (!ANCHORED_VERSION_PATTERN.test(version)) {
+      throw new Error(`Malformed version number string "${version}"`)
+    }
 
     if (EMPTY_PATTERN.test(version)) {
       version = '0'
