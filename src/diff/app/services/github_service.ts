@@ -18,6 +18,8 @@ export default class GithubService {
 
   async allTags() {
     let tagNames: Array<string> = []
+    const forbiddenWords = ['pre', 'pr', 'rc', 'alpha', 'beta']
+    const regex = new RegExp(forbiddenWords.join('|'), 'i')
 
     for await (const response of this.octokit.paginate.iterator(this.octokit.rest.repos.listTags, {
       owner: this.owner,
@@ -25,6 +27,7 @@ export default class GithubService {
       repo: this.repo,
     })) {
       tagNames = tagNames.concat(response.data.map((data) => data.name))
+      tagNames = tagNames.filter((tag) => !regex.test(tag))
     }
 
     return tagNames

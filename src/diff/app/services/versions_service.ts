@@ -40,10 +40,6 @@ export default class VersionsService {
   }
 
   setSource(source: string) {
-    if (!this.sources.includes(source)) {
-      throw new Error('Given source version is unrecognized')
-    }
-
     this.source = source
 
     if (this.target && !this.targets.includes(this.target)) {
@@ -53,9 +49,6 @@ export default class VersionsService {
   }
 
   setTarget(target: string) {
-    if (!this.targets.includes(target)) {
-      throw new Error('Given target version is unrecognized')
-    }
     this.target = target
   }
 

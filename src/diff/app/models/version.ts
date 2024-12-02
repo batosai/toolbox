@@ -1,5 +1,3 @@
-const ANCHORED_VERSION_PATTERN =
-  /^\s*v?([0-9]+(\.[0-9a-zA-Z_]+)*(-[0-9A-Za-z_-]+(\.[0-9A-Za-z_-]+)*)?)?\s*$/
 const EMPTY_PATTERN = /^\s*$/
 
 function dropWhile<T>(arr: T[], func: (item: T) => boolean) {
@@ -10,8 +8,10 @@ function dropWhile<T>(arr: T[], func: (item: T) => boolean) {
 }
 
 export default class Version {
+  #version: string
+
   get canonicalSegments() {
-    return this._splitSegments()
+    return this.#splitSegments()
       .map((segments) => {
         segments = segments.reverse()
         dropWhile(segments, (segment) => segment === 0)
@@ -20,8 +20,8 @@ export default class Version {
       .reduce((result, segments) => result.concat(segments), [])
   }
 
-  private get _segments() {
-    return Array.from(this._version.matchAll(/[0-9]+|[a-z]+/gi), (segment) => {
+  get #segments() {
+    return Array.from(this.#version.matchAll(/[0-9]+|[a-z]+/gi), (segment) => {
       const s = segment[0]
       if (/^\d+$/.test(s)) {
         return parseInt(s, 10)
@@ -31,37 +31,31 @@ export default class Version {
     })
   }
 
-  private _version: string
-
   constructor(version: string) {
     version = version.replace(/\n/g, ' ')
-
-    if (!ANCHORED_VERSION_PATTERN.test(version)) {
-      throw new Error(`Malformed version number string "${version}"`)
-    }
 
     if (EMPTY_PATTERN.test(version)) {
       version = '0'
     }
 
-    this._version = version.trim().replace(/-/g, '.pre.')
+    this.#version = version.trim().replace(/-/g, '.pre.')
   }
 
   toString() {
-    return this._version
+    return this.#version
   }
 
-  private _splitSegments() {
-    const stringStart = this._segments.findIndex(
+  #splitSegments() {
+    const stringStart = this.#segments.findIndex(
       (segment) => typeof segment === 'string'
     )
-    const numericSegments = this._segments.slice(
+    const numericSegments = this.#segments.slice(
       0,
-      stringStart || this._segments.length
+      stringStart || this.#segments.length
     )
-    const stringSegments = this._segments.slice(
+    const stringSegments = this.#segments.slice(
       numericSegments.length,
-      this._segments.length
+      this.#segments.length
     )
     return [numericSegments, stringSegments]
   }

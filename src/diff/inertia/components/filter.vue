@@ -48,7 +48,9 @@
     <div class="card-body">
       <div class="grid grid-cols-3 gap-4">
         <div>
+          <div v-if="!sources.length" class="w-full h-8 mb-4 skeleton"></div>
           <select
+            v-else
             v-model="source"
             @change="refreshSelect"
             class="w-full select select-bordered"
@@ -60,7 +62,9 @@
           </select>
         </div>
         <div>
+          <div v-if="!targets.length" class="w-full h-8 mb-4 skeleton"></div>
           <select
+            v-else
             v-model="target"
             class="w-full select select-bordered"
             aria-label="Target"
@@ -71,7 +75,7 @@
           </select>
         </div>
         <div>
-          <button type="submit" @click="redirectToPage" class="w-full btn btn-primary">
+          <button type="submit" @click="redirectToPage" :disabled="!sources.length && !targets.length" class="w-full btn btn-primary">
             View Diff
           </button>
         </div>
