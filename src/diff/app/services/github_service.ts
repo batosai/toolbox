@@ -1,6 +1,8 @@
 import { Octokit } from 'octokit'
+
 import Patch from '#diff/models/patch'
 import type { PatchType } from '#diff/types'
+import { ratelimit, listTags, patches } from '../../inertia/store.js'
 
 export default class GithubService {
   octokit: Octokit
@@ -26,8 +28,13 @@ export default class GithubService {
       per_page: 100,
       repo: this.repo,
     })) {
+      if (response.headers['x-ratelimit-remaining']) {
+        ratelimit.set(response.headers['x-ratelimit-remaining'])
+      }
       tagNames = tagNames.concat(response.data.map((data) => data.name))
       tagNames = tagNames.filter((tag) => !regex.test(tag))
+
+      listTags.set(tagNames)
     }
 
     return tagNames
@@ -45,11 +52,15 @@ export default class GithubService {
         repo: this.repo,
       }
     )) {
+      if (response.headers['x-ratelimit-remaining']) {
+        ratelimit.set(response.headers['x-ratelimit-remaining'])
+      }
       if (response.data) {
         const data = response.data as { files: Array<object> }
 
         if (data.files) {
           files = files.concat(data.files.map((file) => new Patch(file as PatchType)))
+          patches.set(files)
         }
       }
     }
