@@ -3,7 +3,7 @@
 
   <div class="flex flex-col justify-center min-h-screen px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <svg xmlns="http://www.w3.org/2000/svg" width="500" height="200" viewBox="0 0 500 200">
+      <svg xmlns="http://www.w3.org/2000/svg" height="200">
         <!-- GitHub reference: simplified GitHub logo -->
         <circle cx="50" cy="100" r="40" fill="#181717" />
         <text x="30" y="105" font-size="16" fill="#fff" font-weight="bold">GitHub</text>

@@ -46,7 +46,7 @@
 <template>
   <div class="mb-4 shadow-xl card card-side bg-base-200">
     <div class="card-body">
-      <div class="grid grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div>
           <div v-if="!sources.length" class="w-full h-8 mb-4 skeleton"></div>
           <select
