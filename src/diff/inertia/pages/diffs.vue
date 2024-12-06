@@ -4,7 +4,8 @@
   <Header :owner="owner" :repo="repo" />
 
   <section class="mx-8">
-    <div v-if="ratelimit.remaining == 0" role="alert" class="alert alert-warning">
+    <div v-if="errors" role="alert" class="alert alert-error">{{ errors }}</div>
+    <div v-if="ratelimit.remaining == 0 && !user" role="alert" class="alert alert-warning">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="w-6 h-6 stroke-current shrink-0"
@@ -20,7 +21,7 @@
         <p>You have reached the API request limit for unauthenticated users (60 requests per hour).</p>
         <p>Log in with GitHub to increase your limit to 5,000 requests per hour and continue using the service.</p>
       </div>
-      <button class="btn btn-sm">Log in with GitHub</button>
+      <a href="/github/redirect" class="btn btn-sm" data-inertia="false">Log in with GitHub</a>
     </div>
 
     <Filter :tags="listTags.tags" :sourceVersion="sourceVersion!" :targetVersion="targetVersion!" />
@@ -41,11 +42,11 @@
 <script setup lang="ts">
   import { Head } from '@inertiajs/vue3'
   import { onMounted, watch,  ref } from 'vue'
-  import GithubService from '#diff/services/github_service'
-  import Filter from '../components/filter.vue'
-  import Header from '../components/header.vue'
-  import Code from '../components/section/code.vue'
-  import Title from '../components/section/title.vue'
+  import GithubService from '~/services/github_service'
+  import Filter from '~/components/filter.vue'
+  import Header from '~/components/header.vue'
+  import Code from '~/components/section/code.vue'
+  import Title from '~/components/section/title.vue'
   import { ratelimit, listTags, patches } from '~/store'
 
   const props = defineProps<{
@@ -53,9 +54,15 @@
     repo: string
     sourceVersion?: string
     targetVersion?: string
+    user?: {
+      token: {
+        token: string
+      }
+    }
+    errors: string
   }>()
 
-  const github: GithubService = new GithubService(`${props.owner}/${props.repo}`)
+  const github: GithubService = new GithubService(`${props.owner}/${props.repo}`, props.user?.token.token)
   const sourceVersion = ref(props.sourceVersion)
   const targetVersion = ref(props.targetVersion)
 

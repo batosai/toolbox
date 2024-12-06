@@ -1,19 +1,3 @@
-<script setup lang="ts">
-  import { usePage } from '@inertiajs/vue3'
-  import type { PatchType } from '#diff/types'
-
-  const page = usePage()
-
-  const owner = page.props.owner
-  const repo = page.props.repo
-
-  defineProps<{
-    file: PatchType
-    sourceVersion: string
-    targetVersion: string
-  }>()
-</script>
-
 <template>
   <div class="grid items-center content-center grid-cols-2">
     <h2 :id="file.anchor" class="px-2 font-semibold leading-7">
@@ -41,3 +25,19 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+  import { usePage } from '@inertiajs/vue3'
+  import type { PatchType } from '~/types'
+
+  const page = usePage()
+
+  const owner = page.props.owner
+  const repo = page.props.repo
+
+  defineProps<{
+    file: PatchType
+    sourceVersion: string
+    targetVersion: string
+  }>()
+</script>

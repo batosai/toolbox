@@ -1,5 +1,6 @@
 /// <reference path="../../../../adonisrc.ts" />
 /// <reference path="../../../../config/inertia.ts" />
+/// <reference path="../../../../config/ally.ts" />
 
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import { createInertiaApp } from '@inertiajs/vue3'

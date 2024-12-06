@@ -1,6 +1,8 @@
 import { Octokit } from 'octokit'
-import Patch from '#diff/models/patch'
-import type { PatchType } from '#diff/types'
+
+import Patch from '~/models/patch.js'
+import type { PatchType } from '~/types.js'
+import { ratelimit, listTags, patches } from '../store.js'
 
 export default class GithubService {
   octokit: Octokit
@@ -8,9 +10,11 @@ export default class GithubService {
   owner: string
   repo: string
 
-  constructor() {
-    this.octokit = new Octokit()
-    this.repository = 'batosai/adonis-attachment'
+  constructor(repository: string, token: string | undefined) {
+    this.octokit = new Octokit({
+      auth: token
+    })
+    this.repository = repository
     const [owner, repo] = this.repository.split('/', 2)
     this.owner = owner
     this.repo = repo
@@ -18,21 +22,27 @@ export default class GithubService {
 
   async allTags() {
     let tagNames: Array<string> = []
+    const forbiddenWords = ['pre', 'pr', 'rc', 'alpha', 'beta']
+    const regex = new RegExp(forbiddenWords.join('|'), 'i')
 
     for await (const response of this.octokit.paginate.iterator(this.octokit.rest.repos.listTags, {
       owner: this.owner,
       per_page: 100,
       repo: this.repo,
     })) {
+      if (response.headers['x-ratelimit-remaining']) {
+        ratelimit.set(response.headers['x-ratelimit-remaining'])
+      }
       tagNames = tagNames.concat(response.data.map((data) => data.name))
+      tagNames = tagNames.filter((tag) => !regex.test(tag))
+
+      listTags.set(tagNames)
     }
 
     return tagNames
   }
 
-  async allPatches() {
-    const sourceVersion = '2.4.0'
-    const targetVersion = '2.4.2'
+  async allPatches(sourceVersion: string, targetVersion: string) {
     let files: Array<PatchType> = []
 
     for await (const response of this.octokit.paginate.iterator(
@@ -44,10 +54,16 @@ export default class GithubService {
         repo: this.repo,
       }
     )) {
+      if (response.headers['x-ratelimit-remaining']) {
+        ratelimit.set(response.headers['x-ratelimit-remaining'])
+      }
       if (response.data) {
         const data = response.data as { files: Array<object> }
 
-        files = files.concat(data.files.map((file) => new Patch(file as PatchType)))
+        if (data.files) {
+          files = files.concat(data.files.map((file) => new Patch(file as PatchType)))
+          patches.set(files)
+        }
       }
     }
 

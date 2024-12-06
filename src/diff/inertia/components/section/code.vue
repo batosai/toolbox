@@ -1,11 +1,3 @@
-<script setup lang="ts">
-  import type { PatchType } from '#diff/types'
-
-  defineProps<{
-    file: PatchType
-  }>()
-</script>
-
 <template>
   <div class="mb-4 overflow-x-auto">
     <table class="table diff table-xs">
@@ -19,3 +11,11 @@
     </table>
   </div>
 </template>
+
+<script setup lang="ts">
+  import type { PatchType } from '~/types'
+
+  defineProps<{
+    file: PatchType
+  }>()
+</script>

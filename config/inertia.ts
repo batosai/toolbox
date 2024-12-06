@@ -12,6 +12,13 @@ const inertiaConfig = defineConfig({
    */
   sharedData: {
     errors: (ctx) => ctx.session?.flashMessages.get('errors'),
+    user: (ctx) => {
+      const token = ctx.session.get('githubToken')
+
+      if (token) {
+        return ctx.ally.use('github').userFromToken(token)
+      }
+    }
   },
 
   /**

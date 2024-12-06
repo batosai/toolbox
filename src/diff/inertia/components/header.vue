@@ -1,10 +1,3 @@
-<script setup lang="ts">
-  defineProps<{
-    owner: string
-    repo: string
-  }>()
-</script>
-
 <template>
   <div class="navbar bg-base-100">
     <div class="flex-1">
@@ -18,3 +11,10 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+  defineProps<{
+    owner: string
+    repo: string
+  }>()
+</script>

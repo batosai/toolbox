@@ -1,4 +1,4 @@
-import type { PatchType } from '../types.js'
+import type { PatchType } from '~/types.js'
 import Line from './line.js'
 
 const commentRegexp = /^\\/

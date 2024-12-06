@@ -1,4 +1,4 @@
-import Version from '#diff/models/version'
+import Version from '~/models/version'
 
 export const compareVersions = (a: Version, b: Version) => {
   const aSegments = a.canonicalSegments

@@ -1,5 +1,5 @@
-import Version from '#diff/models/version'
-import { compareVersions } from '#diff/utils'
+import Version from '~/models/version'
+import { compareVersions } from '~/utils'
 
 export default class VersionsService {
   #allVersions: Version[] = []

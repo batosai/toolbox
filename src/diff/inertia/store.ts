@@ -1,4 +1,4 @@
-import type { PatchType } from '#diff/types'
+import type { PatchType } from '~/types'
 
 import { reactive } from 'vue'
 

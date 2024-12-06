@@ -1,4 +1,4 @@
-import type { LineType } from '../types.js'
+import type { LineType } from '~/types.js'
 
 export default class Line {
   content: string
