@@ -48,8 +48,8 @@
 
   const props = defineProps<{
     tags: Array<string>
-    sourceVersion: string
-    targetVersion: string
+    sourceVersion?: string
+    targetVersion?: string
   }>()
 
   const source = ref(props.sourceVersion)
@@ -62,10 +62,12 @@
   }
 
   const refreshSelect = async () => {
-    const versionService = new VersionsService(props.tags)
-    versionService.setSource(source.value)
-    targets.value = (await versionService.targets) as never[]
-    sources.value = (await versionService.sources) as never[]
+    if (source.value) {
+      const versionService = new VersionsService(props.tags)
+      versionService.setSource(source.value)
+      targets.value = (await versionService.targets) as never[]
+      sources.value = (await versionService.sources) as never[]
+    }
   }
 
   watch(
