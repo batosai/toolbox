@@ -5,8 +5,7 @@
     </div>
     <div class="flex-none">
       <ul class="px-1 menu menu-horizontal">
-        <li><a href="#">About</a></li>
-        <li><a href="#">Github</a></li>
+        <li><a href="https://github.com/batosai/toolbox" data-inertia="false" target="_blank">Github</a></li>
       </ul>
     </div>
   </div>
