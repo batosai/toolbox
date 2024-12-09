@@ -20,6 +20,20 @@ export default class GithubService {
     this.repo = repo
   }
 
+  async ping() {
+    try {
+      const response = await fetch(`https://api.github.com/repos/${this.repository}`, { method: 'HEAD'})
+
+      if (response.headers.get('x-ratelimit-remaining')) {
+        ratelimit.set(response.headers.get('x-ratelimit-remaining') as string)
+      }
+      return response.status === 200
+    }
+    catch(error) {
+      return false
+    }
+  }
+
   async allTags() {
     let tagNames: Array<string> = []
     const forbiddenWords = ['pre', 'pr', 'rc', 'alpha', 'beta']
