@@ -18,9 +18,11 @@ RUN apt-get update && \
 RUN mkdir /opt/.volta
 RUN chmod 777 /opt/.volta
 ENV VOLTA_HOME="/opt/.volta"
+ENV VOLTA_FEATURE_PNPM=1
 ENV PATH="$VOLTA_HOME/bin:$PATH"
 RUN curl https://get.volta.sh | bash
 RUN chmod -R 777 /opt/.volta
 
 # Add nodejs LTS
 RUN volta install node
+RUN volta install pnpm
