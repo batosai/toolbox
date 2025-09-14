@@ -1,0 +1,41 @@
+FROM quay.io/toolbx/ubuntu-toolbox:24.04
+
+LABEL com.github.containers.toolbox="true" \
+      name="ubuntu-node-toolbox" \
+      version="24.04" \
+      usage="This image is meant to be used with the toolbox command" \
+      summary="Base image for creating Ubuntu Toolbx containers" \
+      maintainer="Jeremy Chaufourier <jeremy@chaufourier.fr>"
+
+# Packages
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y install \
+    libwebkit2gtk-4.1-dev \
+    build-essential \
+    curl \
+    wget \
+    file \
+    libxdo-dev \
+    libssl-dev \
+    libayatana-appindicator3-dev \
+    librsvg2-dev
+
+
+RUN chmod 777 /opt
+
+# Rust
+ENV CARGO_HOME=/opt/.cargo
+ENV RUSTUP_HOME=/opt/.rustup
+ENV PATH="$CARGO_HOME/bin:$PATH"
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain stable -y
+
+# Volta
+ENV VOLTA_HOME="/opt/.volta"
+ENV VOLTA_FEATURE_PNPM=1
+ENV PATH="$VOLTA_HOME/bin:$PATH"
+RUN curl https://get.volta.sh | bash
+RUN sudo chmod -R 777 /opt
+
+# Add nodejs LTS
+RUN volta install node
+RUN volta install pnpm
