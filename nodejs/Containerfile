@@ -14,14 +14,14 @@ RUN apt-get update && \
     poppler-utils \
     libreoffice
 
+RUN chmod 777 /opt
+
 # Volta
-RUN mkdir /opt/.volta
-RUN chmod 777 /opt/.volta
 ENV VOLTA_HOME="/opt/.volta"
 ENV VOLTA_FEATURE_PNPM=1
 ENV PATH="$VOLTA_HOME/bin:$PATH"
 RUN curl https://get.volta.sh | bash
-RUN chmod -R 777 /opt/.volta
+RUN sudo chmod -R 777 /opt
 
 # Add nodejs LTS
 RUN volta install node
